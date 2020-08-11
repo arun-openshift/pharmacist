@@ -1,5 +1,6 @@
 package com.patientcare.pharmacist.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,9 @@ import com.patientcare.pharmacist.entity.Pillbox;
 @Controller
 public class PharmacistController {
 	
+	@Autowired
+	public RestTemplate restTemplate;
+	
 	@Value("${PILLBOX_API}")
 	private String PILLBOX_API;
 	
@@ -25,7 +29,6 @@ public class PharmacistController {
 	public ResponseEntity<String> getAllPillboxes() {
 		String url = PILLBOX_API + GET_PILLBOX_PATH;
 		
-		RestTemplate restTemplate = new RestTemplate();
 		String resp = restTemplate.getForObject(url, String.class);
 		return new ResponseEntity<String>(resp, HttpStatus.OK);
 				
@@ -35,7 +38,6 @@ public class PharmacistController {
 	public ResponseEntity<String> addPillbox(@RequestBody Pillbox pillbox) {
 		String url = PILLBOX_API + ADD_PILLBOX_PATH;
 		
-		RestTemplate restTemplate = new RestTemplate();
 		String resp = restTemplate.postForObject(url, pillbox, String.class);
 		return new ResponseEntity<String>(resp, HttpStatus.OK);
 		
